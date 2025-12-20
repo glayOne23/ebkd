@@ -98,11 +98,22 @@
             <b class="sub-arrow"></b>
           </li>
 
-          
+
           {% if request|has_group:'admin' %}
             <li class="nav-item-caption">
               <span class="fadeable pl-3">Menu Admin</span>
-              <span class="fadeinable mt-n2 text-125">…</span>        
+              <span class="fadeinable mt-n2 text-125">…</span>
+            </li>
+
+            <li class="nav-item {% setactive req=request url='main:admin.asesor.table' css='active' %}">
+              <a href="{% url 'main:admin.asesor.table' %}" class="nav-link">
+                <i class="nav-icon fas fa-users nav-icon-round bgc-primary-tp1"></i>
+                <span class="nav-text fadeable">
+                  <span>Asesor</span>
+                </span>
+              </a>
+
+              <b class="sub-arrow"></b>
             </li>
 
 
@@ -236,6 +247,6 @@
       </div>
     </div>
 
-    
+
   </div>
 </div>

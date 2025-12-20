@@ -31,12 +31,12 @@ def index(request):
     # extra_tags is optional, used in the notif function located in -> (apps\main\templates\main\layout\javascript.html)
 
     # messages.success(request, 'Welcome to Dashboard', extra_tags=dumps({
-    #     'redirect'      : reverse('main:dashboard'), 
+    #     'redirect'      : reverse('main:dashboard'),
     #     'confbtntxt'    : 'Check Data',
     #     'denybtntxt'    : 'Cancel',
     #     'title'         : 'Welcome',
     # }))
 
-
+    print("masukkkkkkkkkkkkkkk")
     # ===[Render Template]===
     return render(request, 'main/index.html', context)

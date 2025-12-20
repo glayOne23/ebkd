@@ -7,6 +7,7 @@ from apps.main.views import (
     dashboard,
     category,
     setting,
+    asesor
 )
 
 app_name = 'main'
@@ -23,10 +24,11 @@ urlpatterns = [
         # =================================================[ LOAD PAGE ]=================================================
         path('table/',                              account.table,              name='account_table'),
         path('role/',                               account.role,               name='account_role'),
-        path('add/',                                account.add,                name='account_add'),        
+        path('add/',                                account.add,                name='account_add'),
+        path('generate/',                           account.generate,           name='account_generate'),
         path('edit/<int:id>/',                      account.edit,               name='account_edit'),
         path('edit_group/<int:id>/',                account.edit_group,         name='account_edit_group'),
-        
+
         # ==================================================[ SERVICE ]==================================================
         path('delrole/<int:userid>/<int:groupid>/', account.delrole,            name='account_delrole'),
         path('deletelist/',                         account.deletelist,         name='account_deletelist'),
@@ -55,5 +57,17 @@ urlpatterns = [
 
         # ==================================================[ SERVICE ]==================================================
         path('deletefile/<int:id>/',                setting.deletefile,         name='setting_deletefile'),
+    ])),
+
+    path('admin/', include([
+        path('asesor/', include([
+            # =================================================[ LOAD PAGE ]=================================================
+            path('table/', asesor.AdminAsesorListView.as_view(), name='admin.asesor.table'),
+            path('add/', asesor.AdminAsesorCreateView.as_view(), name='admin.asesor.add'),
+            path('<int:id>/update/', asesor.AdminAsesorUpdateView.as_view(), name='admin.asesor.update'),
+            path('excel_import/', asesor.AdminAsesorExcelImportView.as_view(), name='admin.asesor.excel_import'),
+            # ==================================================[ SERVICE ]==================================================
+            path('deletelist/', asesor.AdminAsesorDeleteListView.as_view(), name='admin.asesor.deletelist'),
+        ])),
     ])),
 ]

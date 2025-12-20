@@ -2,3 +2,4 @@
 
 from .m_category import Category
 from .m_setting import Setting
+from .m_ajuan import JabatanFungsional, JenjangPendidikan, RumpunIlmu, Asesor, Semester, AjuanBKD
