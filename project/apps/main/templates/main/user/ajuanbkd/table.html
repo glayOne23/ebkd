@@ -1,6 +1,5 @@
 {% extends 'main/layout/base.html' %}
 {% load main_tags %}
-{% load crispy_forms_tags %}
 
 {% block content %}
   <div class="page-content container container-plus">
@@ -9,7 +8,7 @@
         Admin
         <small class="page-info text-secondary-d2 text-nowrap">
           <i class="fa fa-angle-double-right text-80"></i>
-          Asesor
+          Ajuan BKD
         </small>
       </h1>
 
@@ -37,7 +36,7 @@
 
           <form method="post" autocomplete="off">
 
-            <table id="datatable_asesor" class="d-style w-100 table text-dark-m1 text-95 border-y-1 brc-black-tp11 collapsed dtr-table">
+            <table id="datatable_ajuanbkd" class="d-style w-100 table text-dark-m1 text-95 border-y-1 brc-black-tp11 collapsed dtr-table">
               <!-- add `collapsed` by default ... it will be removed by default -->
               <!-- thead with .sticky-nav -->
               <thead class="sticky-nav text-secondary-m1 text-uppercase text-85">
@@ -54,12 +53,16 @@
                     No
                   </th>
 
-                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
-                    Nama
+                  <th class="border-0 bgc-white shadow-sm w-2">
+                    Aksi
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
-                    NIRA
+                    User
+                  </th>
+
+                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
+                    Pengaju
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
@@ -67,38 +70,47 @@
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
-                    Jafung
+                    No Wa
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
-                    Pendidikan Terakhir
+                    Perguruan Tinggi
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
-                    Rumpun Ilmu
+                    Semester
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
-                    Sub Rumpun Ilmu
+                    Asesor 1
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
-                    Bidang Ilmu
+                    Asesor 2
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
-                    Status Asesor
+                    Keterangan
                   </th>
 
-                  <th class="border-0 bgc-white shadow-sm w-2">
-                    Aksi
+                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
+                    Nomor Surat
                   </th>
+
+                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
+                    Surat Permohonan
+                  </th>
+
+                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
+                    Bukti Pembayaran
+                  </th>
+
                 </tr>
               </thead>
 
               <tbody class="pos-rel">
-                {% if data_asesor %}
-                {% for data in data_asesor %}
+                {% if data_ajuanbkd %}
+                {% for data in data_ajuanbkd %}
                 <tr class="d-style bgc-h-default-l4">
                   <td class="td-toggle-details pos-rel">
                     <!-- this empty table cell will show the `+` sign which toggles the hidden cells in responsive (collapsed) mode -->
@@ -120,45 +132,9 @@
                   </td>
 
                   <td class="align-middle">
-                    {{ data.user.get_full_name }} ({{data.user.username}})
-                  </td>
-
-                  <td class="align-middle">
-                    {{ data.nira }}
-                  </td>
-
-                  <td class="align-middle">
-                    {{ data.user.profile.nidn }}
-                  </td>
-
-                  <td class="align-middle">
-                    {{ data.jabatanfungsional }}
-                  </td>
-
-                  <td class="align-middle">
-                    {{ data.pendidikanterakhir }}
-                  </td>
-
-                  <td class="align-middle">
-                    {{ data.rumpunilmu }}
-                  </td>
-
-                  <td class="align-middle">
-                    {{ data.subrumpunilmu }}
-                  </td>
-
-                  <td class="align-middle">
-                    {{ data.bidangilmu }}
-                  </td>
-
-                  <td class="align-middle">
-                    {{ data.aktif }}
-                  </td>
-
-                  <td class="align-middle">
                     <div class="d-flex">
                       <span class="d-lg-inline mx-1">
-                        <a href="{% url 'main:admin.asesor.update' data.id %}" data-action="edit">
+                        <a href="{% url 'main:user.ajuanbkd.update' data.id %}" data-action="edit">
                           <button type="button" data-rel="tooltip" data-action="edit" title="Edit" class="btn btn-outline-warning shadow-sm btn-bgc-white">
                               <i class="fas fa-pen-to-square text-100"></i>
                           </button>
@@ -166,7 +142,7 @@
                       </span>
 
                       <span class="d-lg-inline mx-1">
-                        <a data-action="delete" onclick="submit_listid(`{% url 'main:admin.asesor.deletelist' %}`, '{{ data.id }}' )">
+                        <a data-action="delete" onclick="submit_listid(`{% url 'main:user.ajuanbkd.deletelist' %}`, '{{ data.id }}' )">
                           <button type="button" data-rel="tooltip" data-action="delete" title="Delete" class="btn btn-outline-danger shadow-sm btn-bgc-white">
                               <i class="fas fa-trash-can text-100"></i>
                           </button>
@@ -175,6 +151,58 @@
                     </div>
 
                   </td>
+
+                  <td class="align-middle">
+                    {{ data.user }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.pengusul }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.nidn }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.nomortelepon }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.perguruantinggi }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.semester }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.asesor1 }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.asesor2 }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.keterangan }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.nomor_surat }}
+                  </td>
+
+                  <td class="align-middle">
+                    {{ data.surat_permohonan }}
+                  </td>
+
+                  <td class="align-middle">
+                    {% if data.bukti_pembayaran %}
+                      <a href="{{ data.bukti_pembayaran.url }}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>
+                    {% else %}
+                    {% endif %}
+                  </td>
+
                 </tr>
                 {% endfor %}
                 {% endif %}
@@ -188,41 +216,14 @@
     </div>
 
   </div>
-
-<!-- imporAsesorModal -->
-<!-- Modal -->
-<div class="modal fade" id="imporAsesorModal" tabindex="-1" aria-labelledby="imporAsesorModalLabel" aria-hidden="true">
-	<form action="{% url 'main:admin.asesor.excel_import' %}" method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-		<div class="modal-dialog modal-dialog-centered">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h5 class="modal-title" id="imporAsesorModalLabel">Impor Presensi Excel</h5>
-			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			  </button>
-			</div>
-			<div class="modal-body">
-			  {{asesor_excel_form|crispy}}
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-			  <button type="submit" class="btn btn-primary">Impor</button>
-			</div>
-		  </div>
-		</div>
-	</form>
-</div>
-
-
 {% endblock %}
 
 
 {% block javascript %}
 <script>
   $(document).ready(function(){
-    var tableId_asesor = '#datatable_asesor'
-    var $_table_asesor = $(tableId_asesor).DataTable({
+    var tableId_ajuanbkd = '#datatable_ajuanbkd'
+    var $_table_ajuanbkd = $(tableId_ajuanbkd).DataTable({
       dom:
         "<'row'<'col-12 col-sm-4 pl-2'l><'col-12 col-sm-4'B><'col-12 col-sm-4 pr-2 text-right'f>>" +
         "<'row'<'col-12'tr>>" +
@@ -300,16 +301,13 @@
 
 
     // specify position of table buttons
-    $(tableId_asesor).closest('.card').find('.card-toolbar').append(`
-      <a href="{% url 'main:admin.asesor.add' %}">
+    $(tableId_ajuanbkd).closest('.card').find('.card-toolbar').append(`
+      <a href="{% url 'main:user.ajuanbkd.add' %}">
         <button data-rel="tooltip" type="button" class="btn radius-round btn-outline-primary border-2 btn-sm ml-2" title="Add New">
           <i class="fa fa-plus"></i>
         </button>
       </a>
-	    <button data-rel="tooltip" type="button" class="btn radius-round btn-outline-success border-2 btn-sm ml-2" title="Impor Asesor dengan Excel" data-toggle="modal" data-target="#imporAsesorModal">
-        <i class="fa fa-file-excel"></i>
-      </button>
-      <button data-rel="tooltip" type="button" class="btn radius-round btn-outline-danger border-2 btn-sm ml-2" title="Delete" onclick="submit_listid('{% url 'main:admin.asesor.deletelist' %}',get_list_id('${tableId_asesor}'))">
+      <button data-rel="tooltip" type="button" class="btn radius-round btn-outline-danger border-2 btn-sm ml-2" title="Delete" onclick="submit_listid('{% url 'main:user.ajuanbkd.deletelist' %}',get_list_id('${tableId_ajuanbkd}'))">
         <i class="far fa-trash-alt"></i>
       </button>
     `)
@@ -318,12 +316,12 @@
 
 
     // helper methods to add/remove bgc-h-* class when selecting/deselecting rows
-    var _highlightSelectedRow_asesor = function(row) {
+    var _highlightSelectedRow_ajuanbkd = function(row) {
       row.querySelector('input[type=checkbox]').checked = true
       row.classList.add('bgc-success-l3')
       row.classList.remove('bgc-h-default-l4')
     }
-    var _unhighlightDeselectedRow_asesor = function(row) {
+    var _unhighlightDeselectedRow_ajuanbkd = function(row) {
       row.querySelector('input[type=checkbox]').checked = false
       row.classList.remove('bgc-success-l3')
       row.classList.add('bgc-h-default-l4')
@@ -331,29 +329,29 @@
 
 
     // listen to select/deselect event to highlight rows
-    $_table_asesor.on('select', function (e, dt, type, index) {
+    $_table_ajuanbkd.on('select', function (e, dt, type, index) {
       if ( type == 'row' ) {
-        var row = $_table_asesor.row( index ).node()
-        _highlightSelectedRow_asesor(row)
+        var row = $_table_ajuanbkd.row( index ).node()
+        _highlightSelectedRow_ajuanbkd(row)
       }
     }).on('deselect', function (e, dt, type, index) {
       if ( type == 'row' ) {
-        var row = $_table_asesor.row( index ).node()
-        _unhighlightDeselectedRow_asesor(row)
+        var row = $_table_ajuanbkd.row( index ).node()
+        _unhighlightDeselectedRow_ajuanbkd(row)
       }
     })
 
 
     // when clicking the checkbox in table header, select/deselect all rows
-    $(tableId_asesor).on('click', 'th input[type=checkbox]', function () {
+    $(tableId_ajuanbkd).on('click', 'th input[type=checkbox]', function () {
       if(this.checked) {
-        $_table_asesor.rows({ search: 'applied' }).select().every(function() {
-          _highlightSelectedRow_asesor(this.node())
+        $_table_ajuanbkd.rows({ search: 'applied' }).select().every(function() {
+          _highlightSelectedRow_ajuanbkd(this.node())
         });
       }
       else {
-        $_table_asesor.rows({ search: 'applied' }).deselect().every(function() {
-          _unhighlightDeselectedRow_asesor(this.node())
+        $_table_ajuanbkd.rows({ search: 'applied' }).deselect().every(function() {
+          _unhighlightDeselectedRow_ajuanbkd(this.node())
         })
       }
     })
@@ -361,21 +359,21 @@
 
     // add/remove bgc-h-* class to TH when soring columns
     var previousTh = null
-    var toggleTH_highlight_asesor = function(th) {
+    var toggleTH_highlight_ajuanbkd = function(th) {
       th.classList.toggle('bgc-yellow-l2')
       th.classList.toggle('bgc-h-yellow-l3')
       th.classList.toggle('text-blue-d2')
     }
 
-    $(tableId_asesor).on('click', 'th:not(.sorting_disabled)', function () {
-      if(previousTh != null) toggleTH_highlight_asesor(previousTh)// unhighlight previous TH
-      toggleTH_highlight_asesor(this)
+    $(tableId_ajuanbkd).on('click', 'th:not(.sorting_disabled)', function () {
+      if(previousTh != null) toggleTH_highlight_ajuanbkd(previousTh)// unhighlight previous TH
+      toggleTH_highlight_ajuanbkd(this)
       previousTh = this
     })
 
 
     // don't select row if we click on the "show details" `plus` sign (td)
-    $(tableId_asesor).on('click', 'td.dtr-control', function (e) {
+    $(tableId_ajuanbkd).on('click', 'td.dtr-control', function (e) {
       e.stopPropagation()
     })
 

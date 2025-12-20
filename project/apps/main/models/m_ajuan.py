@@ -62,7 +62,7 @@ class Asesor(models.Model):
         ordering    = ['id']
 
     def __str__(self):
-        return self.nama
+        return self.user.get_full_name()
 
 
 class Semester(models.Model):

@@ -98,6 +98,22 @@
             <b class="sub-arrow"></b>
           </li>
 
+          <li class="nav-item-caption">
+            <span class="fadeable pl-3">Menu Pengaju</span>
+            <span class="fadeinable mt-n2 text-125">…</span>
+          </li>
+
+          <li class="nav-item {% setactive req=request url='main:user.ajuanbkd.table' css='active' %}">
+            <a href="{% url 'main:user.ajuanbkd.table' %}" class="nav-link">
+              <i class="nav-icon fas fa-file-text nav-icon-round bgc-primary-tp1"></i>
+              <span class="nav-text fadeable">
+                <span>Ajuan BKD</span>
+              </span>
+            </a>
+
+            <b class="sub-arrow"></b>
+          </li>
+
 
           {% if request|has_group:'admin' %}
             <li class="nav-item-caption">
@@ -110,6 +126,18 @@
                 <i class="nav-icon fas fa-users nav-icon-round bgc-primary-tp1"></i>
                 <span class="nav-text fadeable">
                   <span>Asesor</span>
+                </span>
+              </a>
+
+              <b class="sub-arrow"></b>
+            </li>
+
+
+            <li class="nav-item {% setactive req=request url='main:admin.semester.table' css='active' %}">
+              <a href="{% url 'main:admin.semester.table' %}" class="nav-link">
+                <i class="nav-icon fas fa-book nav-icon-round bgc-warning-tp1"></i>
+                <span class="nav-text fadeable">
+                  <span>Semester</span>
                 </span>
               </a>
 

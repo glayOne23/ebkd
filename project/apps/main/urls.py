@@ -7,7 +7,9 @@ from apps.main.views import (
     dashboard,
     category,
     setting,
-    asesor
+    asesor,
+    semester,
+    ajuanbkd
 )
 
 app_name = 'main'
@@ -68,6 +70,25 @@ urlpatterns = [
             path('excel_import/', asesor.AdminAsesorExcelImportView.as_view(), name='admin.asesor.excel_import'),
             # ==================================================[ SERVICE ]==================================================
             path('deletelist/', asesor.AdminAsesorDeleteListView.as_view(), name='admin.asesor.deletelist'),
+        ])),
+        path('semester/', include([
+            # =================================================[ LOAD PAGE ]=================================================
+            path('table/', semester.AdminSemesterListView.as_view(), name='admin.semester.table'),
+            path('add/', semester.AdminSemesterCreateView.as_view(), name='admin.semester.add'),
+            path('<int:id>/update/', semester.AdminSemesterUpdateView.as_view(), name='admin.semester.update'),
+            # ==================================================[ SERVICE ]==================================================
+            path('deletelist/', semester.AdminSemesterDeleteListView.as_view(), name='admin.semester.deletelist'),
+        ])),
+    ])),
+
+    path('user/', include([
+        path('ajuanbkd/', include([
+            # =================================================[ LOAD PAGE ]=================================================
+            path('table/', ajuanbkd.AjuanBKDListView.as_view(), name='user.ajuanbkd.table'),
+            path('add/', ajuanbkd.AjuanBKDCreateView.as_view(), name='user.ajuanbkd.add'),
+            path('<int:id>/update/', ajuanbkd.AjuanBKDUpdateView.as_view(), name='user.ajuanbkd.update'),
+            # ==================================================[ SERVICE ]==================================================
+            path('deletelist/', ajuanbkd.AjuanBKDDeleteListView.as_view(), name='user.ajuanbkd.deletelist'),
         ])),
     ])),
 ]

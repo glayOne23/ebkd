@@ -10,10 +10,29 @@ class AsesorForm(forms.ModelForm, FormErrorsMixin):
         model   = Asesor
         fields  = '__all__'
 
-        # labels  = {
-        #     'name'        : _('Name'),
-        #     'description' : _('Description'),
-        # }
+        labels  = {
+            'jabatanfungsional'        : _('Jabatan Fungsional'),
+            'pendidikanterakhir' : _('Pendidikan Terakhir'),
+            'rumpunilmu' : _('Rumpun Ilmu'),
+            'subrumpunilmu' : _('Sub Rumpun Ilmu'),
+            'bidangilmu' : _('Bidang Ilmu'),
+        }
+
+        widgets = {
+            'user'        : forms.Select(attrs={'class': 'select form-control select2bs4'}),
+            'jabatanfungsional' : forms.Select(attrs={'class': 'select form-control select2bs4'}),
+            'pendidikanterakhir' : forms.Select(attrs={'class': 'select form-control select2bs4'}),
+            'rumpunilmu' : forms.Select(attrs={'class': 'select form-control select2bs4'}),
+            'subrumpunilmu' : forms.Select(attrs={'class': 'select form-control select2bs4'}),
+            'bidangilmu' : forms.Select(attrs={'class': 'select form-control select2bs4'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['user'].label_from_instance = (
+            lambda obj: f"{obj.get_full_name()} ({obj.username})"
+        )
 
 
 class AsesorExcelForm(forms.Form, FormErrorsMixin):

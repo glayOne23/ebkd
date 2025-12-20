@@ -1,22 +1,25 @@
 from json import dumps
 
 import openpyxl
+from apps.main.forms.asesor import AsesorExcelForm, AsesorForm
+from apps.main.models import (Asesor, JabatanFungsional, JenjangPendidikan,
+                              RumpunIlmu)
+from apps.services.apigateway import apigateway
+from apps.services.utils import profilesync
 from django.contrib import messages
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import Count, Q
+from decimal import Decimal
+
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
+from django.utils.safestring import mark_safe
 from django.views import View
 from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
-
-from apps.main.forms.asesor import AsesorExcelForm, AsesorForm
-from apps.main.models import Asesor, JabatanFungsional, JenjangPendidikan, RumpunIlmu
-from apps.services.apigateway import apigateway
-from apps.services.utils import profilesync
 
 
 # =====================================================================================================
@@ -43,7 +46,7 @@ class CustomTemplateBaseMixin(LoginRequiredMixin):
         context = super().get_context_data(**kwargs)
         # ===[Select CSS and JS Files]===
         context['datatables']       = True
-        context['select2']          = False
+        context['select2']          = True
         context['summernote']       = False
         context['maxlength']        = False
         context['inputmask']        = False
@@ -64,6 +67,11 @@ class AdminAsesorListView(AdminRequiredMixin, CustomTemplateBaseMixin, ListView)
 
     def get_queryset(self):
         return self.model.objects.order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['asesor_excel_form'] = AsesorExcelForm
+        return context
 
 
 class AdminAsesorCreateView(AdminRequiredMixin, CustomTemplateBaseMixin, CreateView):
@@ -122,67 +130,91 @@ class AdminAsesorDeleteListView(AdminRequiredMixin, View):
 
 
 class AdminAsesorExcelImportView(AdminRequiredMixin, View):
+
+    def get_user_by_nidn(self, namauser, nidn):
+        user = User.objects.select_related("profile").filter(profile__nidn=nidn).first()
+
+        if not user:
+            raise Exception(f"Asesor tidak ditemukan (NAMA='{namauser}', NIDN='{nidn}')" )
+
+        return user
+
+
+    def parse_rumpun(self, value, tipe):
+        """
+        value: 'A01 - Ilmu Sosial'
+        tipe: rumpun | subrumpun | bidang
+        """
+        if not value:
+            return None
+
+        try:
+            kode, nama = value.split('-', 1)
+            obj, _ = RumpunIlmu.objects.update_or_create(
+                kode_rumpun=kode.strip(),
+                defaults={
+                    'nama': nama.strip(),
+                    'tipe_rumpun': tipe
+                }
+            )
+            return obj
+        except Exception:
+            raise ValueError(f"Format {tipe} tidak valid: '{value}'")
+
+
     def _import_regular(self, workbook):
         user_cache = {}
+        errors = []   # ⬅️ kumpulkan error
 
         for sheet in workbook.worksheets:
 
-            if sheet.max_row < 2:
+            if sheet.max_row < 3:
                 continue
 
-            for idx, row in enumerate(sheet.iter_rows(min_row=3, values_only=True), start=2):
+            for idx, row in enumerate(
+                sheet.iter_rows(min_row=3, values_only=True),
+                start=3
+            ):
                 if not any(row):
                     continue
 
                 try:
-                    nira = str(row[2]).strip()
+                    namauser = str(row[1]).strip()
+
+                    raw_nira = row[2]
+                    if raw_nira is None:
+                        nira = None
+                    elif isinstance(raw_nira, float):
+                        nira = format(Decimal(str(raw_nira)), 'f')
+                    else:
+                        nira = str(raw_nira).strip()
+
                     nidn = str(row[3]).strip()
-                    jafung = JabatanFungsional.objects.get(nama=str(row[4]).strip()) if str(row[4]).strip() else None
-                    pendidikanterakhir = JenjangPendidikan.objects.get(nama=str(row[5]).strip()) if str(row[5]).strip() else None
+
+                    jafung = (
+                        JabatanFungsional.objects.get(nama=str(row[4]).strip())
+                        if row[4] else None
+                    )
+
+                    pendidikanterakhir = (
+                        JenjangPendidikan.objects.get(nama=str(row[5]).strip())
+                        if row[5] else None
+                    )
+
                     statusasesor = str(row[7]).strip() == 'Aktif'
-                    rumpunilmu = None
-                    if rumpunilmucol := str(row[8]).strip():
-                        kode_rumpun, nama = rumpunilmucol.split('-')
-                        rumpunilmu,_ = RumpunIlmu.objects.update_or_create(
-                            kode_rumpun=kode_rumpun.strip(),
-                            defaults={
-                                'nama': nama.strip(),
-                                'tipe_rumpun': 'rumpun'
-                            }
-                        )
-                    subrumpunilmu = None
-                    if subrumpunilmucol := str(row[9]).strip():
-                        kode_rumpun, nama = subrumpunilmucol.split('-')
-                        subrumpunilmu,_ = RumpunIlmu.objects.update_or_create(
-                            kode_rumpun=kode_rumpun.strip(),
-                            defaults={
-                                'nama': nama.strip(),
-                                'tipe_rumpun': 'subrumpun'
-                            }
-                        )
-                    bidangilmu = None
-                    if bidangilmucol := str(row[9]).strip():
-                        kode_rumpun, nama = bidangilmucol.split('-')
-                        bidangilmu,_ = RumpunIlmu.objects.update_or_create(
-                            kode_rumpun=kode_rumpun.strip(),
-                            defaults={
-                                'nama': nama.strip(),
-                                'tipe_rumpun': 'bidang'
-                            }
-                        )
-                    cache_key = f"{nira}:{nidn}"
+
+                    rumpunilmu = self.parse_rumpun(row[8], 'rumpun')
+                    subrumpunilmu = self.parse_rumpun(row[9], 'subrumpun')
+                    bidangilmu = self.parse_rumpun(row[10], 'bidang')
+
+                    cache_key = f"{nidn}"
 
                     if cache_key in user_cache:
                         peserta = user_cache[cache_key]
                     else:
-                        peserta = User.objects.select_related("profile").filter(Q(profile__nidn=nidn)).first()
-                        if not peserta:
-                            raise Exception(f"Asesor tidak ditemukan " f"(NIDN='{nidn}')")
+                        peserta = self.get_user_by_nidn(namauser, nidn)
                         user_cache[cache_key] = peserta
 
-                    # =============================
-                    # 🔧 SIMPAN DATA PRESENSI
-                    # =============================
                     Asesor.objects.update_or_create(
                         user=peserta,
                         defaults={
@@ -197,8 +229,11 @@ class AdminAsesorExcelImportView(AdminRequiredMixin, View):
                     )
 
                 except Exception as e:
-                    raise Exception(f"Sheet='{sheet.title}' " f"Baris={idx} " f"Error={e}")
+                    errors.append(
+                        f"Sheet '{sheet.title}' baris {idx}: {e}"
+                    )
 
+        return errors
 
 
     def post(self, request, *args, **kwargs):
@@ -216,10 +251,19 @@ class AdminAsesorExcelImportView(AdminRequiredMixin, View):
 
         try:
             with transaction.atomic():
-                self._import_regular(workbook)
+                errors = self._import_regular(workbook)
+
+                if errors:
+                    error_text = "<br>".join(errors)
+                    messages.warning(request, mark_safe(f"Import selesai dengan error:<br>{error_text}"))
+                    return redirect('main:admin.asesor.table')
+
         except Exception as e:
             messages.error(request, f"Gagal impor Excel. {e}")
             return redirect('main:admin.asesor.table')
 
-        messages.success(request, "Import selesai. Semua data berhasil diunggah.")
+        messages.success(
+            request,
+            "Import selesai. Semua data berhasil diunggah."
+        )
         return redirect('main:admin.asesor.table')
