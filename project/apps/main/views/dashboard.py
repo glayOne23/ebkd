@@ -36,7 +36,5 @@ def index(request):
     #     'denybtntxt'    : 'Cancel',
     #     'title'         : 'Welcome',
     # }))
-
-    print("masukkkkkkkkkkkkkkk")
     # ===[Render Template]===
     return render(request, 'main/index.html', context)

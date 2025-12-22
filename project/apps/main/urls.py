@@ -79,16 +79,30 @@ urlpatterns = [
             # ==================================================[ SERVICE ]==================================================
             path('deletelist/', semester.AdminSemesterDeleteListView.as_view(), name='admin.semester.deletelist'),
         ])),
+        path('ajuanbkd/', include([
+            # =================================================[ LOAD PAGE ]=================================================
+            path('table/', ajuanbkd.AdminAjuanBKDListView.as_view(), name='admin.ajuanbkd.table'),
+            path('<int:id>/update/', ajuanbkd.AdminAjuanBKDUpdateView.as_view(), name='admin.ajuanbkd.update'),
+            # ==================================================[ SERVICE ]==================================================
+            path('deletelist/', ajuanbkd.AdminAjuanBKDDeleteListView.as_view(), name='admin.ajuanbkd.deletelist'),
+        ])),
     ])),
 
     path('user/', include([
         path('ajuanbkd/', include([
             # =================================================[ LOAD PAGE ]=================================================
-            path('table/', ajuanbkd.AjuanBKDListView.as_view(), name='user.ajuanbkd.table'),
-            path('add/', ajuanbkd.AjuanBKDCreateView.as_view(), name='user.ajuanbkd.add'),
-            path('<int:id>/update/', ajuanbkd.AjuanBKDUpdateView.as_view(), name='user.ajuanbkd.update'),
+            path('table/', ajuanbkd.UserAjuanBKDListView.as_view(), name='user.ajuanbkd.table'),
+            path('add/', ajuanbkd.UserAjuanBKDCreateView.as_view(), name='user.ajuanbkd.add'),
+            path('<int:id>/update/', ajuanbkd.UserAjuanBKDUpdateView.as_view(), name='user.ajuanbkd.update'),
             # ==================================================[ SERVICE ]==================================================
-            path('deletelist/', ajuanbkd.AjuanBKDDeleteListView.as_view(), name='user.ajuanbkd.deletelist'),
+            path('deletelist/', ajuanbkd.UserAjuanBKDDeleteListView.as_view(), name='user.ajuanbkd.deletelist'),
+        ])),
+    ])),
+
+    path('asesor/', include([
+        path('ajuanbkd/', include([
+            # =================================================[ LOAD PAGE ]=================================================
+            path('table/', ajuanbkd.AsesorAjuanBKDListView.as_view(), name='asesor.ajuanbkd.table'),
         ])),
     ])),
 ]

@@ -7,6 +7,12 @@ TIPE_RUMPUN_CHOICES = [
     ('bidang', 'Bidang Ilmu'),
 ]
 
+STATUS_AJUAN_CHOICES = [
+    ('proses', 'Proses'),
+    ('revisi', 'Revisi'),
+    ('disetujui', 'Disetujui'),
+]
+
 
 class JabatanFungsional(models.Model):
     nama       = models.CharField(max_length=255, unique=True)
@@ -80,7 +86,7 @@ class Semester(models.Model):
 
 class AjuanBKD(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    pengusul = models.TextField()
+    pengusul = models.CharField(max_length=255)
     nidn = models.CharField(max_length=50)
     nomortelepon = models.CharField(max_length=15)
     perguruantinggi = models.CharField(max_length=255)
@@ -91,6 +97,7 @@ class AjuanBKD(models.Model):
     nomor_surat = models.CharField(max_length=100)
     surat_permohonan = models.FileField(upload_to='surat_permohonan/')
     bukti_pembayaran = models.FileField(upload_to='bukti_pembayaran/')
+    status_ajuan = models.CharField(max_length=100, choices=STATUS_AJUAN_CHOICES, default='proses')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -2,12 +2,13 @@ from django import template
 from django.urls import reverse, NoReverseMatch
 from django.conf import settings
 from django.contrib.auth.models import User
+from apps.main.models import Asesor
 
 register = template.Library()
 
 
 # ==============================================================================================
-#                                         AUTHORIZATION 
+#                                         AUTHORIZATION
 # ==============================================================================================
 
 @register.filter('has_group')
@@ -22,8 +23,9 @@ def has_group(request, groups_name):
     return False
 
 
-
-
+@register.filter('is_asesor')
+def is_asesor(request):
+    return Asesor.objects.filter(user=request.user).exists()
 
 
 # ==============================================================================================
@@ -39,7 +41,7 @@ def setactive(req, url, *args, css='', **kwargs):
 
     if not req:
         return ''
-    
+
     current_path = req.path.rstrip('/') + '/'
 
     if isinstance(url, str) and url.startswith('/'):

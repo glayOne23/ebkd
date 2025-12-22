@@ -5,7 +5,7 @@
   <div class="page-content container container-plus">
     <div class="page-header border-0 pb-3">
       <h1 class="page-title text-primary-d2 text-150">
-        Pengaju
+        Asesor
         <small class="page-info text-secondary-d2 text-nowrap">
           <i class="fa fa-angle-double-right text-80"></i>
           Ajuan BKD
@@ -51,10 +51,6 @@
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
                     No
-                  </th>
-
-                  <th class="border-0 bgc-white shadow-sm w-2">
-                    Aksi
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
@@ -136,27 +132,6 @@
                   </td>
 
                   <td class="align-middle">
-                    <div class="d-flex">
-                      <span class="d-lg-inline mx-1">
-                        <a href="{% url 'main:user.ajuanbkd.update' data.id %}" data-action="edit">
-                          <button type="button" data-rel="tooltip" data-action="edit" title="Edit" class="btn btn-outline-warning shadow-sm btn-bgc-white">
-                              <i class="fas fa-pen-to-square text-100"></i>
-                          </button>
-                        </a>
-                      </span>
-
-                      <span class="d-lg-inline mx-1">
-                        <a data-action="delete" onclick="submit_listid(`{% url 'main:user.ajuanbkd.deletelist' %}`, '{{ data.id }}' )">
-                          <button type="button" data-rel="tooltip" data-action="delete" title="Delete" class="btn btn-outline-danger shadow-sm btn-bgc-white">
-                              <i class="fas fa-trash-can text-100"></i>
-                          </button>
-                        </a>
-                      </span>
-                    </div>
-
-                  </td>
-
-                  <td class="align-middle">
                     {{ data.user }}
                   </td>
 
@@ -211,7 +186,6 @@
                   <td class="align-middle">
                     {% if data.bukti_pembayaran %}
                       <a href="{{ data.bukti_pembayaran.url }}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>
-                    {% else %}
                     {% endif %}
                   </td>
 
@@ -313,16 +287,11 @@
 
 
     // specify position of table buttons
-    $(tableId_ajuanbkd).closest('.card').find('.card-toolbar').append(`
-      <a href="{% url 'main:user.ajuanbkd.add' %}">
-        <button data-rel="tooltip" type="button" class="btn radius-round btn-outline-primary border-2 btn-sm ml-2" title="Add New">
-          <i class="fa fa-plus"></i>
-        </button>
-      </a>
-      <button data-rel="tooltip" type="button" class="btn radius-round btn-outline-danger border-2 btn-sm ml-2" title="Delete" onclick="submit_listid('{% url 'main:user.ajuanbkd.deletelist' %}',get_list_id('${tableId_ajuanbkd}'))">
+    {% comment %} $(tableId_ajuanbkd).closest('.card').find('.card-toolbar').append(`
+      <button data-rel="tooltip" type="button" class="btn radius-round btn-outline-danger border-2 btn-sm ml-2" title="Delete" onclick="submit_listid('{% url 'main:admin.ajuanbkd.deletelist' %}',get_list_id('${tableId_ajuanbkd}'))">
         <i class="far fa-trash-alt"></i>
       </button>
-    `)
+    `) {% endcomment %}
 
     $('.dataTables_wrapper').find('.dataTables_filter').find('input').addClass('pl-45 radius-round').removeClass('form-control-sm')
 
