@@ -12,6 +12,7 @@ class AjuanBKDForm(forms.ModelForm, FormErrorsMixin):
         exclude  = ['user', 'status_ajuan', 'surat_persetujuan', 'surat_penugasan']
 
         labels  = {
+            'jabatanfungsional'        : _('Jabatan Fungsional'),
             'nomortelepon'        : _('No. Handphone (Whatsapp)'),
             'perguruantinggi' : _('Nama Perguruan Tinggi'),
             'semester' : _('Semester yang dinilai'),

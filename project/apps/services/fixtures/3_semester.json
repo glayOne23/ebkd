@@ -1,0 +1,82 @@
+[
+{
+    "model": "main.semester",
+    "pk": 1,
+    "fields": {
+        "nama": "Genap 2024/2025",
+        "aktif": true,
+        "created_at": "2025-12-20T05:56:10.220Z",
+        "updated_at": "2026-01-12T06:02:58.676Z"
+    }
+},
+{
+    "model": "main.semester",
+    "pk": 2,
+    "fields": {
+        "nama": "Gasal 2024/2025",
+        "aktif": true,
+        "created_at": "2025-12-20T05:56:53.976Z",
+        "updated_at": "2026-01-12T06:02:53.877Z"
+    }
+},
+{
+    "model": "main.semester",
+    "pk": 3,
+    "fields": {
+        "nama": "Genap 2023/2024",
+        "aktif": true,
+        "created_at": "2025-12-20T05:57:02.000Z",
+        "updated_at": "2026-01-12T06:02:49.271Z"
+    }
+},
+{
+    "model": "main.semester",
+    "pk": 4,
+    "fields": {
+        "nama": "Gasal 2023/2024",
+        "aktif": true,
+        "created_at": "2025-12-20T05:57:09.841Z",
+        "updated_at": "2026-01-12T06:02:44.623Z"
+    }
+},
+{
+    "model": "main.semester",
+    "pk": 5,
+    "fields": {
+        "nama": "Genap 2022/2023",
+        "aktif": true,
+        "created_at": "2025-12-20T05:57:22.277Z",
+        "updated_at": "2026-01-12T06:02:39.235Z"
+    }
+},
+{
+    "model": "main.semester",
+    "pk": 6,
+    "fields": {
+        "nama": "Gasal 2022/2023",
+        "aktif": true,
+        "created_at": "2025-12-20T05:57:29.865Z",
+        "updated_at": "2026-01-12T06:02:33.708Z"
+    }
+},
+{
+    "model": "main.semester",
+    "pk": 7,
+    "fields": {
+        "nama": "Genap 2021/2022",
+        "aktif": true,
+        "created_at": "2025-12-20T05:57:35.884Z",
+        "updated_at": "2026-01-12T06:02:29.374Z"
+    }
+},
+{
+    "model": "main.semester",
+    "pk": 8,
+    "fields": {
+        "nama": "Gasal 2021/2022",
+        "aktif": true,
+        "created_at": "2025-12-20T05:57:43.644Z",
+        "updated_at": "2026-01-12T06:02:23.561Z"
+    }
+}
+]

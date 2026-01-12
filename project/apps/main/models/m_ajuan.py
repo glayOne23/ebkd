@@ -88,6 +88,7 @@ class AjuanBKD(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     pengusul = models.CharField(max_length=255)
     nidn = models.CharField(max_length=50)
+    jabatanfungsional = models.ForeignKey(JabatanFungsional, on_delete=models.SET_NULL, null=True, blank=True)
     nomortelepon = models.CharField(max_length=15)
     perguruantinggi = models.CharField(max_length=255)
     semester = models.ManyToManyField(Semester)
