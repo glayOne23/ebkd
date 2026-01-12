@@ -83,6 +83,8 @@ urlpatterns = [
             # =================================================[ LOAD PAGE ]=================================================
             path('table/', ajuanbkd.AdminAjuanBKDListView.as_view(), name='admin.ajuanbkd.table'),
             path('<int:id>/update/', ajuanbkd.AdminAjuanBKDUpdateView.as_view(), name='admin.ajuanbkd.update'),
+            path('<int:id>/surat_persetujuan_pdf/', ajuanbkd.AdminAjuanBKDSuratPersetujuanPdfView.as_view(), name='admin.ajuanbkd.surat_persetujuan_pdf'),
+            # path('<int:id>/surat_penugasan_pdf/', ajuanbkd.AdminAjuanBKDSuratPenugasanPdfView.as_view(), name='admin.ajuanbkd.surat_penugasan_pdf'),
             # ==================================================[ SERVICE ]==================================================
             path('deletelist/', ajuanbkd.AdminAjuanBKDDeleteListView.as_view(), name='admin.ajuanbkd.deletelist'),
         ])),

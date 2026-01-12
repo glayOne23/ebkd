@@ -1,14 +1,15 @@
-from django import forms
-from django.utils.translation import gettext_lazy as _
-
+from apps.main.models import AjuanBKD, Asesor, Semester
 from apps.services.mixins import FormErrorsMixin
-from apps.main.models import AjuanBKD, Semester, Asesor
+from django import forms
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 
 
 class AjuanBKDForm(forms.ModelForm, FormErrorsMixin):
     class Meta:
         model   = AjuanBKD
-        exclude  = ['user', 'status_ajuan']
+        exclude  = ['user', 'status_ajuan', 'surat_persetujuan', 'surat_penugasan']
 
         labels  = {
             'nomortelepon'        : _('No. Handphone (Whatsapp)'),
@@ -39,3 +40,10 @@ class AdminAjuanBKDForm(AjuanBKDForm):
     class Meta:
         model   = AjuanBKD
         exclude  = ['user', 'status']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.instance and self.instance.pk:
+            url = reverse('main:admin.ajuanbkd.surat_persetujuan_pdf', kwargs={'id': self.instance.pk})
+            self.fields['surat_persetujuan'].label = mark_safe(f'Surat Persetujuan 'f'<a href="{url}" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-file-pdf"></i> Unduh Template</a>')

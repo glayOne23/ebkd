@@ -97,6 +97,8 @@ class AjuanBKD(models.Model):
     nomor_surat = models.CharField(max_length=100)
     surat_permohonan = models.FileField(upload_to='surat_permohonan/')
     bukti_pembayaran = models.FileField(upload_to='bukti_pembayaran/')
+    surat_persetujuan = models.FileField(upload_to='surat_persetujuan/', blank=True, null=True)
+    surat_penugasan = models.FileField(upload_to='surat_penugasan/', blank=True, null=True)
     status_ajuan = models.CharField(max_length=100, choices=STATUS_AJUAN_CHOICES, default='proses')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

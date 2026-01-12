@@ -10,6 +10,7 @@ from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
+from apps.services.cetak_pdf import render_to_pdf
 
 
 # =====================================================================================================
@@ -137,6 +138,17 @@ class AdminAjuanBKDUpdateView(AdminRequiredMixin, CustomTemplateBaseMixin, Updat
         context['dataasesor'] = Asesor.objects.filter(aktif=True)
         return context
 
+
+class AdminAjuanBKDSuratPersetujuanPdfView(AdminRequiredMixin, View):
+    def get(self, request, id):
+        context = {}
+        ajuanbkd_obj = get_object_or_404(AjuanBKD, id=id)
+        template = 'main/admin/ajuanbkd/pdf/surat_persetujuan.html'
+        return render_to_pdf(
+            template,
+            context,
+            filename="Surat Izin Studi"
+        )
 
 # =====================================================================================================
 #                                                ADMIN SERVICE
