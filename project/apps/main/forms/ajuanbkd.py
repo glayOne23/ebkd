@@ -48,3 +48,4 @@ class AdminAjuanBKDForm(AjuanBKDForm):
         if self.instance and self.instance.pk:
             url = reverse('main:admin.ajuanbkd.surat_persetujuan_pdf', kwargs={'id': self.instance.pk})
             self.fields['surat_persetujuan'].label = mark_safe(f'Surat Persetujuan 'f'<a href="{url}" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-file-pdf"></i> Unduh Template</a>')
+            self.fields['surat_penugasan'].label = mark_safe(f'Surat Penugasan 'f'<a href="{url}?tipe_surat=penugasan" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-file-pdf"></i> Unduh Template</a>')

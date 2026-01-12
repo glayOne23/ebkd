@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import AccessMixin
 from django.db import transaction
 from django.db.models import Q
+from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
@@ -141,15 +142,18 @@ class AdminAjuanBKDUpdateView(AdminRequiredMixin, CustomTemplateBaseMixin, Updat
 
 class AdminAjuanBKDSuratPersetujuanPdfView(AdminRequiredMixin, View):
     def get(self, request, id):
-        context = {}
         ajuanbkd_obj = get_object_or_404(AjuanBKD, id=id)
+        context = {
+            'ajuanbkd_obj': ajuanbkd_obj,
+            'tipe_surat': "Penugasan" if request.GET.get('tipe_surat') == 'penugasan' else "Persetujuan",
+        }
         template = 'main/admin/ajuanbkd/pdf/surat_persetujuan.html'
+        # return render(request, template, context)
         return render_to_pdf(
             template,
             context,
-            filename="Surat Izin Studi"
+            filename=f"Surat Persetujuan BKD atas nama {ajuanbkd_obj.pengusul}.pdf"
         )
-
 # =====================================================================================================
 #                                                ADMIN SERVICE
 # =====================================================================================================

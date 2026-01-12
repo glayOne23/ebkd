@@ -1,0 +1,75 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+	<meta name="description" content="The HTML5 Herald">
+	<meta name="author" content="SitePoint">
+	<style>
+		@page {
+			size: A4 portrait;
+			margin: 60px;
+			@frame footer {
+				 -pdf-frame-content: footerContent;
+				 bottom: 0cm;
+				 margin-left: 18cm;
+				 margin-right: 0cm;
+				 height: 1cm;
+			}
+		}
+		.small{
+			font-size: 10px;
+			font-style: italic;
+		}
+		.header-title{
+			font-size: 20px;
+		}
+		.header-addr{
+			font-size: 12px;
+		}
+		hr {
+			display: block;
+			height: 1px;
+			border: 0;
+			border-top: 1px solid #ccc;
+			padding: 0;
+		}
+		.page-break{
+			page-break-after: always;
+		}
+		.kop-surat{
+			margin: 0px;
+			padding: 0px;
+			width: 400px;
+		}
+		.tujuan-surat{
+		    font-size: 10px;
+			margin-left: 400px;
+		}
+		.isi-surat{
+		    font-size: 10px;
+			text-align: justify;
+		}
+		.table-pdf{
+			border: 0.5px solid black;
+			padding: 3px 3px 0px 3px;
+		}
+	</style>
+
+	{% block inlinecss %}
+
+	{% endblock inlinecss %}
+</head>
+
+<body>
+	<div class="container">
+		<!-- Header -->
+		{% block pdf_container %}
+
+		{% endblock pdf_container %}
+	</div>
+
+</body>
+</html>

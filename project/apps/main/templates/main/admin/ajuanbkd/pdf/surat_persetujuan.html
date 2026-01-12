@@ -1,0 +1,123 @@
+{% extends "main/pdf_layouts/pdf_base_v3.html" %}
+{% load static %}
+
+{% block pdf_container %}
+
+<!-- Kop -->
+<div id="headerContent">
+    {% include "main/pdf_layouts/kop_v3.html" %}
+</div>
+
+<!-- Isi Dokumen -->
+<!-- Isi -->
+<br><br><br><br>
+<div style="font-size: 13px;">
+	<!-- Judul -->
+	<table>
+        <tr>
+            <td style="width: 10%;">Nomor</td>
+            <td style="width: 2%;">:</td>
+            <td style="width: 40%;"></td>
+            <td style="width: 40%; padding-left: 3em">Surakarta, {% now "d F Y" %}</td>
+        </tr>
+        <tr>
+            <td>Lampiran</td>
+            <td>:</td>
+            <td>1 Lembar</td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">Hal</td>
+            <td style="vertical-align: top;">:</td>
+            <td> <b>
+                {{tipe_surat}} Asesor BKD
+                {% for semester in ajuanbkd_obj.semester.all %}
+                    {{ semester.nama }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                </b>
+            </td>
+        </tr>
+    </table>
+
+    <br><br>
+
+    <table>
+        <tr>
+            <td style="width: 10%;vertical-align: top;">Kepada</td>
+            <td style="width: 2%;vertical-align: top;">:</td>
+            <td>
+                Yth. <b>Rektor {{ajuanbkd_obj.perguruantinggi}}</b>
+
+                <br><br>
+
+                <p>Dengan hormat,</p>
+
+                <p>Menindaklanjuti surat dari Rektor {{ajuanbkd_obj.perguruantinggi}} perihal permohonan asesor LKD dengan data terlampir.</p>
+
+                <table style="border: 1px solid black;padding: 0.2em;">
+                    <tr style="background-color: rgb(195, 195, 195); text-align: center; font-weight: bold;">
+                        <td style="width: 6%">No.</td>
+                        <td>Nama Dosen Pengusul</td>
+                        <td>Asesor 1</td>
+                        <td>Asesor 2</td>
+                    </tr>
+                    <tr>
+                        <td>1. </td>
+                        <td>{{ajuanbkd_obj.pengusul}}</td>
+                        <td>
+                            {% if ajuanbkd_obj.asesor1 %}
+                                {{ajuanbkd_obj.asesor1.user.get_full_name}}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if ajuanbkd_obj.asesor2 %}
+                                {{ajuanbkd_obj.asesor2.user.get_full_name}}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+
+                <p>Pimpinan Universitas Muhammadiyah Surakarta menyetujui dosen tersebut menjadi asesor bagi dosen tersebut diatas.</p>
+
+                <p>Demikian surat persetujuan kami sampaikan, atas perhatianya kami ucapkan terima kasih.</p>
+            </td>
+        </tr>
+    </table>
+
+    <br><br>
+    <table>
+        <tr>
+            <td style="width: 60%;"></td>
+            <td>
+                a.n Rektor, <br>
+                Ketua Panitia
+                <br><br><br><br>
+                <b>Ir. Tri Widayatno, S.T., M.Sc., Ph.D.</b>
+            </td>
+        </tr>
+    </table>
+
+
+    <p>
+        Tembusan:
+        <br>
+        1. Rektor sebagai laporan
+        <br>
+        2. Kepala DSDMO
+        <br>
+        {% if ajuanbkd_obj.asesor1 %}
+        3. {{ajuanbkd_obj.asesor1.user.get_full_name}}
+        <br>
+        {% endif %}
+        {% if ajuanbkd_obj.asesor2 %}
+        4. {{ajuanbkd_obj.asesor2.user.get_full_name}}
+        {% endif %}
+    </p>
+
+
+</div>
+
+{% endblock pdf_container %}

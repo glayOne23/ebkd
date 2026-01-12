@@ -1,0 +1,41 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+	<meta name="description" content="The HTML5 Herald">
+	<meta name="author" content="SitePoint">
+	<!-- <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}"> -->
+	<style>
+		@page {
+			size: A4 portrait;
+			margin: 10px;
+			@frame footer {
+				 -pdf-frame-content: footerContent;
+				 bottom: 0cm;
+				 margin-left: 18cm;
+				 margin-right: 0cm;
+				 height: 1cm;
+			}
+		}
+
+	</style>
+
+	{% block inlinecss %}
+
+	{% endblock inlinecss %}
+</head>
+
+<body>
+	<div class="container">
+		<!-- Header -->
+		{% block pdf_container %}
+
+		{% endblock pdf_container %}
+	</div>
+
+</body>
+</html>

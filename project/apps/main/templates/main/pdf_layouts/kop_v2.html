@@ -1,0 +1,21 @@
+{% load static %}
+
+<!-- Kop -->
+<div>
+    <table style="border: 1px solid black; padding: 0px 0px 3px 0px">
+        <tbody>
+        <tr>
+            <td style="width: 15%; vertical-align: top; padding:0.5em;"><img src="{% static 'images/logo/ums_logo_full_color.png' %}" alt="Logo"></td>
+            <td style="width: 17%; padding-top:0.4em; padding-left:0.2em;">
+                <div style="font-size: 12px; padding:0.2em; font-weight: bold">Universitas Muhammadiyah Surakarta</div>
+            </td>
+            <td style="width: 48%; vertical-align:center; text-align:center;padding-top:0.6em;">
+                <div style="font-size: 15px; font-weight: bold">{{title}}</div>
+            </td>
+            <td style="width: 20%; padding-top:0.2em ;text-align:center">
+                <div style="font-size: 12px; font-weight: bold">KODE: {{kode}}</div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
