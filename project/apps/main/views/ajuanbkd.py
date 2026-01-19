@@ -87,7 +87,7 @@ class UserAjuanBKDDeleteListView(View):
 
         if not list_id:
             messages.error(request, 'Invalid request!')
-            return redirect('main:admin.ajuanbkd.table')
+            return redirect('main:user.ajuanbkd.table')
 
         try:
             with transaction.atomic():
@@ -102,7 +102,7 @@ class UserAjuanBKDDeleteListView(View):
         except Exception as e:
             messages.error(request, f'Terdapat kesalahan ketika menghapus data {str(e)}')
 
-        return redirect('main:admin.ajuanbkd.table')
+        return redirect('main:user.ajuanbkd.table')
 
 
 
