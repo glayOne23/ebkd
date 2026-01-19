@@ -128,7 +128,7 @@ class AdminAjuanBKDUpdateView(AdminRequiredMixin, CustomTemplateBaseMixin, Updat
         return get_object_or_404(self.model, id=self.kwargs.get('id'))
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        # form.instance.user = self.request.user
         response = super().form_valid(form)
         messages.success(self.request, "Data Ajuan BKD berhasil diperbarui")
         return response
