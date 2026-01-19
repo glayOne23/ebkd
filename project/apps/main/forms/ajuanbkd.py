@@ -33,7 +33,7 @@ class AjuanBKDForm(forms.ModelForm, FormErrorsMixin):
         # ✅ filter semester aktif saja
         self.fields['asesor1'].queryset = Asesor.objects.filter(aktif=True)
         self.fields['asesor2'].queryset = Asesor.objects.filter(aktif=True)
-        self.fields['semester'].queryset = Semester.objects.filter(aktif=True)
+        self.fields['semester'].queryset = Semester.objects.filter(aktif=True).order_by("-id")
 
 
 

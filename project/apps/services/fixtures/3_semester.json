@@ -1,7 +1,7 @@
 [
 {
     "model": "main.semester",
-    "pk": 1,
+    "pk": 8,
     "fields": {
         "nama": "Genap 2024/2025",
         "aktif": true,
@@ -11,7 +11,7 @@
 },
 {
     "model": "main.semester",
-    "pk": 2,
+    "pk": 7,
     "fields": {
         "nama": "Gasal 2024/2025",
         "aktif": true,
@@ -21,7 +21,7 @@
 },
 {
     "model": "main.semester",
-    "pk": 3,
+    "pk": 6,
     "fields": {
         "nama": "Genap 2023/2024",
         "aktif": true,
@@ -31,7 +31,7 @@
 },
 {
     "model": "main.semester",
-    "pk": 4,
+    "pk": 5,
     "fields": {
         "nama": "Gasal 2023/2024",
         "aktif": true,
@@ -41,7 +41,7 @@
 },
 {
     "model": "main.semester",
-    "pk": 5,
+    "pk": 4,
     "fields": {
         "nama": "Genap 2022/2023",
         "aktif": true,
@@ -51,7 +51,7 @@
 },
 {
     "model": "main.semester",
-    "pk": 6,
+    "pk": 3,
     "fields": {
         "nama": "Gasal 2022/2023",
         "aktif": true,
@@ -61,7 +61,7 @@
 },
 {
     "model": "main.semester",
-    "pk": 7,
+    "pk": 2,
     "fields": {
         "nama": "Genap 2021/2022",
         "aktif": true,
@@ -71,7 +71,7 @@
 },
 {
     "model": "main.semester",
-    "pk": 8,
+    "pk": 1,
     "fields": {
         "nama": "Gasal 2021/2022",
         "aktif": true,
