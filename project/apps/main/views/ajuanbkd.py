@@ -130,7 +130,7 @@ class AdminAjuanBKDUpdateView(AdminRequiredMixin, CustomTemplateBaseMixin, Updat
     def form_valid(self, form):
         # form.instance.user = self.request.user
         response = super().form_valid(form)
-        messages.success(self.request, "Data Ajuan BKD berhasil diperbarui")
+        messages.success(self.request, "Data Ajuan BKD berhasil main:admin.ajuanbkd.tablediperbarui")
         return response
 
     def get_context_data(self, **kwargs):
