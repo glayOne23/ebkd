@@ -105,6 +105,10 @@
                     Bukti Pembayaran
                   </th>
 
+                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
+                    Surat Penugasan
+                  </th>
+
                 </tr>
               </thead>
 
@@ -186,6 +190,12 @@
                   <td class="align-middle">
                     {% if data.bukti_pembayaran %}
                       <a href="{{ data.bukti_pembayaran.url }}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>
+                    {% endif %}
+                  </td>
+
+                  <td class="align-middle">
+                    {% if data.surat_penugasan %}
+                      <a href="{{ data.surat_penugasan.url }}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>
                     {% endif %}
                   </td>
 

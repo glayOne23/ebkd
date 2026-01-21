@@ -109,6 +109,10 @@
                     Bukti Pembayaran
                   </th>
 
+                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
+                    Surat Persetujuan
+                  </th>
+
                 </tr>
               </thead>
 
@@ -212,6 +216,12 @@
                     {% if data.bukti_pembayaran %}
                       <a href="{{ data.bukti_pembayaran.url }}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>
                     {% else %}
+                    {% endif %}
+                  </td>
+
+                  <td class="align-middle">
+                    {% if data.surat_persetujuan %}
+                      <a href="{{ data.surat_persetujuan.url }}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>
                     {% endif %}
                   </td>
 
