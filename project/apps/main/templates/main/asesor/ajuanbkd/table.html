@@ -194,8 +194,8 @@
                   </td>
 
                   <td class="align-middle">
-                    {% if data.surat_penugasan %}
-                      <a href="{{ data.surat_penugasan.url }}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>
+                    {% if data.status_ajuan == "disetujui" %}
+                      <a href="{% url 'main:admin.ajuanbkd.surat_persetujuan_pdf' data.id %}?tipe_surat=penugasan" target="_blank"> <i class="fa fa-download"></i> Unduh</a>
                     {% endif %}
                   </td>
 

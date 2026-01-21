@@ -1,17 +1,16 @@
 from apps.main.forms.ajuanbkd import AdminAjuanBKDForm, AjuanBKDForm
 from apps.main.models import AjuanBKD, Asesor
 from apps.main.views.base import AdminRequiredMixin, CustomTemplateBaseMixin
+from apps.services.cetak_pdf import render_to_pdf
 from django.contrib import messages
-from django.contrib.auth.mixins import AccessMixin
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Q
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
-from apps.services.cetak_pdf import render_to_pdf
 
 
 # =====================================================================================================
@@ -140,7 +139,7 @@ class AdminAjuanBKDUpdateView(AdminRequiredMixin, CustomTemplateBaseMixin, Updat
         return context
 
 
-class AdminAjuanBKDSuratPersetujuanPdfView(AdminRequiredMixin, View):
+class AdminAjuanBKDSuratPersetujuanPdfView(LoginRequiredMixin, View):
     def get(self, request, id):
         ajuanbkd_obj = get_object_or_404(AjuanBKD, id=id)
         context = {
@@ -152,7 +151,7 @@ class AdminAjuanBKDSuratPersetujuanPdfView(AdminRequiredMixin, View):
         return render_to_pdf(
             template,
             context,
-            filename=f"Surat Persetujuan BKD atas nama {ajuanbkd_obj.pengusul}.pdf"
+            filename=f"Surat {context['tipe_surat']} BKD atas nama {ajuanbkd_obj.pengusul}.pdf"
         )
 # =====================================================================================================
 #                                                ADMIN SERVICE
