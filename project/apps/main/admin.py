@@ -12,3 +12,9 @@ class AdminSetting(admin.ModelAdmin):
 
 admin.site.register(Category, AdminCategory)
 admin.site.register(Setting, AdminSetting)
+admin.site.register(JenjangPendidikan)
+admin.site.register(RumpunIlmu)
+admin.site.register(JabatanFungsional)
+admin.site.register(Asesor)
+admin.site.register(Semester)
+admin.site.register(AjuanBKD)
