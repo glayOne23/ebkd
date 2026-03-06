@@ -66,6 +66,10 @@
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
+                    Jafung
+                  </th>
+
+                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
                     Status
                   </th>
 
@@ -173,6 +177,10 @@
                   </td>
 
                   <td class="align-middle">
+                    {{ data.jabatanfungsional }}
+                  </td>
+
+                  <td class="align-middle">
                     <span class="badge {% if data.status_ajuan == 'disetujui' %} badge-success {% else %} badge-primary {% endif %} ">{{ data.get_status_ajuan_display }}</span>
                   </td>
 
@@ -196,14 +204,10 @@
 
                   <td class="align-middle">
                     {{ data.asesor1 }}
-                    <br>
-                    ({{data.asesor1.jabatanfungsional}})
                   </td>
 
                   <td class="align-middle">
                     {{ data.asesor2 }}
-                    <br>
-                    ({{data.asesor2.jabatanfungsional}})
                   </td>
 
                   <td class="align-middle">
