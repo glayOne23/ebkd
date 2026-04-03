@@ -186,7 +186,8 @@ class AdminAjuanBKDDataView(View):
         total = queryset.count()
 
         # 📄 PAGINATION
-        queryset = queryset[start:start+length]
+        if length != -1:
+            queryset = queryset[start:start+length]
 
         data = []
         for i, obj in enumerate(queryset, start=1):
