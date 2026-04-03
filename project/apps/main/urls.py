@@ -82,6 +82,7 @@ urlpatterns = [
         path('ajuanbkd/', include([
             # =================================================[ LOAD PAGE ]=================================================
             path('table/', ajuanbkd.AdminAjuanBKDListView.as_view(), name='admin.ajuanbkd.table'),
+            path('table/data/', ajuanbkd.AdminAjuanBKDDataView.as_view(), name='admin.ajuanbkd.data'),
             path('<int:id>/update/', ajuanbkd.AdminAjuanBKDUpdateView.as_view(), name='admin.ajuanbkd.update'),
             path('<int:id>/surat_persetujuan_pdf/', ajuanbkd.AdminAjuanBKDSuratPersetujuanPdfView.as_view(), name='admin.ajuanbkd.surat_persetujuan_pdf'),
             # path('<int:id>/surat_penugasan_pdf/', ajuanbkd.AdminAjuanBKDSuratPenugasanPdfView.as_view(), name='admin.ajuanbkd.surat_penugasan_pdf'),

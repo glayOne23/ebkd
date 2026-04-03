@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
@@ -109,13 +110,17 @@ class UserAjuanBKDDeleteListView(View):
 # =====================================================================================================
 #                                               ADMIN
 # =====================================================================================================
-class AdminAjuanBKDListView(AdminRequiredMixin, CustomTemplateBaseMixin, ListView):
-    model = AjuanBKD
+class AdminAjuanBKDListView(AdminRequiredMixin, CustomTemplateBaseMixin, TemplateView):
     template_name = 'main/admin/ajuanbkd/table.html'
-    context_object_name = 'data_ajuanbkd'
 
-    def get_queryset(self):
-        return self.model.objects.all().order_by('-id')
+# class AdminAjuanBKDListView(AdminRequiredMixin, CustomTemplateBaseMixin, ListView):
+#     model = AjuanBKD
+#     template_name = 'main/admin/ajuanbkd/table.html'
+#     context_object_name = 'data_ajuanbkd'
+
+#     def get_queryset(self):
+#         return self.model.objects.all().order_by('-id')
+
 
 class AdminAjuanBKDUpdateView(AdminRequiredMixin, CustomTemplateBaseMixin, UpdateView):
     model = AjuanBKD
@@ -153,6 +158,65 @@ class AdminAjuanBKDSuratPersetujuanPdfView(LoginRequiredMixin, View):
             context,
             filename=f"Surat {context['tipe_surat']} BKD atas nama {ajuanbkd_obj.pengusul}.pdf"
         )
+
+
+
+# =====================================================================================================
+#                                                SERVICE
+# =====================================================================================================
+class AdminAjuanBKDDataView(View):
+
+    def get(self, request):
+        draw = int(request.GET.get('draw', 1))
+        start = int(request.GET.get('start', 0))
+        length = int(request.GET.get('length', 10))
+        search_value = request.GET.get('search[value]', '')
+
+        queryset = AjuanBKD.objects.all().order_by('-id')
+
+        # 🔍 SEARCH
+        if search_value:
+            queryset = queryset.filter(
+                Q(user__username__icontains=search_value) |
+                Q(pengusul__icontains=search_value) |
+                Q(nidn__icontains=search_value) |
+                Q(perguruantinggi__icontains=search_value)
+            )
+
+        total = queryset.count()
+
+        # 📄 PAGINATION
+        queryset = queryset[start:start+length]
+
+        data = []
+        for i, obj in enumerate(queryset, start=1):
+            data.append({
+                "id": obj.id,
+                "no": start + i,
+                "user": str(obj.user),
+                "pengusul": obj.pengusul,
+                "jafung": obj.jabatanfungsional.nama if obj.jabatanfungsional else '',
+                "status_ajuan": obj.status_ajuan,
+                "status": obj.get_status_ajuan_display(),
+                "nidn": obj.nidn,
+                "wa": obj.nomortelepon,
+                "pt": obj.perguruantinggi,
+                "semester": ", ".join([s.nama for s in obj.semester.all()]),
+                "asesor1": str(obj.asesor1) if obj.asesor1 else '',
+                "asesor2": str(obj.asesor2) if obj.asesor2 else '',
+                "keterangan": obj.keterangan or '',
+                "nomor_surat": obj.nomor_surat or '',
+                "surat_permohonan_url": obj.surat_permohonan.url if obj.surat_permohonan else '',
+                "bukti_pembayaran_url": obj.bukti_pembayaran.url if obj.bukti_pembayaran else '',
+
+            })
+
+        return JsonResponse({
+            "draw": draw,
+            "recordsTotal": total,
+            "recordsFiltered": total,
+            "data": data
+        })
 # =====================================================================================================
 #                                                ADMIN SERVICE
 # =====================================================================================================

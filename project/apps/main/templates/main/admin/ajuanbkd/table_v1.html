@@ -263,181 +263,81 @@
   $(document).ready(function(){
     var tableId_ajuanbkd = '#datatable_ajuanbkd'
     var $_table_ajuanbkd = $(tableId_ajuanbkd).DataTable({
-      processing: true,
-      serverSide: true,
-
-      ajax: {
-        url: "{% url 'main:admin.ajuanbkd.data' %}",
-        type: "GET"
-      },
-
       dom:
         "<'row'<'col-12 col-sm-4 pl-2'l><'col-12 col-sm-4'B><'col-12 col-sm-4 pr-2 text-right'f>>" +
         "<'row'<'col-12'tr>>" +
         "<'row'<'col-12 col-md-5'i><'col-12 col-md-7'p>>",
-
       renderer: 'bootstrap',
       responsive: true,
+      classes: {
+        sLength: "dataTables_length text-left w-auto",
+      },
+      buttons: {
+        dom: {
+          button: {
+            className: 'btn' //remove the default 'btn-secondary'
+          },
+          container: {
+            className: 'dt-buttons btn-group bgc-white-tp2 text-right w-auto'
+          }
+        },
 
-      columns: [
-        {
-          data: null,
-          orderable: false,
-          render: function () {
-            return ``
-          }
-        },
-        {
-          data: "id",
-          orderable: false,
-          render: function (data) {
-            return `<input type="checkbox" value="${data}" />`
-          }
-        },
-        { data: "no" },
-        {
-          data: "id",
-          orderable: false,
-          render: function (data, type, row, meta) {
-
-            let url_edit = "{% url 'main:admin.ajuanbkd.update' 99999 %}".replace('99999', data)
-
-            return `<div class="d-flex">
-                      <span class="d-lg-inline mx-1">
-                        <a href="${url_edit}" class="btn btn-outline-warning shadow-sm btn-bgc-white" title="Edit">
-                          <i class="fas fa-pen-to-square text-100"></i>
-                        </a>
-                      </span>
-
-                      <span class="d-lg-inline mx-1">
-                        <a data-action="delete" onclick="submit_listid('{% url 'main:admin.ajuanbkd.deletelist' %}', '${data}')">
-                          <button type="button" title="Delete" class="btn btn-outline-danger shadow-sm btn-bgc-white">
-                            <i class="fas fa-trash-can text-100"></i>
-                          </button>
-                        </a>
-                      </span>
-                    </div>`
-          }
-        },
-        { data: "user" },
-        { data: "pengusul" },
-        { data: "jafung" },
-        {
-          data: "status",
-          render: function (data) {
-            let badge = data === 'Disetujui'
-              ? 'badge-success'
-              : 'badge-primary'
-            return `<span class="badge ${badge}">${data}</span>`
-          }
-        },
-        { data: "nidn" },
-        { data: "wa" },
-        { data: "pt" },
-        { data: "semester" },
-        { data: "asesor1" },
-        { data: "asesor2" },
-        { data: "keterangan" },
-        { data: "nomor_surat" },
-        {
-          data: "surat_permohonan_url",
-          render: function (data, type, row, meta) {
-            file_download = ''
-            if (data) {
-              file_download = `<a href="${data}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>`
-            }
-            return file_download
-          }
-        },
-        {
-          data: "bukti_pembayaran_url",
-          render: function (data, type, row, meta) {
-            file_download = ''
-            if (data) {
-              file_download = `<a href="${data}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>`
-            }
-            return file_download
-          }
-        },
-        {
-          data: "id",
-          render: function (data, type, row, meta) {
-            url = "{% url 'main:admin.ajuanbkd.surat_persetujuan_pdf' 99999 %}".replace('99999', data)
-            file_download = ''
-            if (row.status_ajuan == 'disetujui') {
-              file_download = `<a href="${url}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>`
-            }
-            return file_download
-          }
-        },
-        {
-          data: "id",
-          render: function (data, type, row, meta) {
-            url = "{% url 'main:admin.ajuanbkd.surat_persetujuan_pdf' 99999 %}?tipe_surat=penugasan".replace('99999', data)
-            file_download = ''
-            if (row.status_ajuan == 'disetujui') {
-              file_download = `<a href="${url}" target="_blank"> <i class="fa fa-download"></i> Unduh</a>`
-            }
-            return file_download
-          }
-        },
-      ],
-
+        buttons: [
+          {
+            "extend": "colvis",
+            "text": "<i class='far fa-eye text-125 text-dark-m2' data-toggle='tooltip' title='Show/hide columns'></i> <span class='d-none'>Show/hide columns</span>",
+            "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary",
+            columns: ':not(:first)'
+          },
+          {
+            "extend": "copy",
+            "text": "<i class='far fa-copy text-125 text-purple' data-toggle='tooltip' title='Copy to clipboard'></i> <span class='d-none'>Copy to clipboard</span>",
+            "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary"
+          },
+          {
+            "extend": "csv",
+            "text": "<i class='fa fa-database text-125 text-success-m1' data-toggle='tooltip' title='CSV'></i> <span class='d-none'>Export to CSV</span>",
+            "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary"
+          },
+          {
+            "extend": "excel",
+            "text": "<i class='far fa-file-excel text-125 text-success-m1' data-toggle='tooltip' title='Excel'></i> <span class='d-none'>Export to Excel</span>",
+            "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary"
+          },
+          {
+            "extend": "print",
+            "text": "<i class='fa fa-print text-125 text-orange-d1' data-toggle='tooltip' title='Print'></i> <span class='d-none'>Print</span>",
+            "className": "btn-light-default btn-bgc-white  btn-h-outline-primary btn-a-outline-primary",
+            autoPrint: false,
+            message: 'This print was produced using the Print button for DataTables'
+          }	,
+          {
+            "extend": "pdf",
+            "text": "<i class='far fa-file-pdf text-125 text-danger-m1' data-toggle='tooltip' title='Export to PDF'></i> <span class='d-none'>Export to PDF</span>",
+            "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary"
+          },
+        ]
+      },
+      // first and last column are not sortable
       columnDefs: [
         {
-          targets: [0,1,3],
-          orderable: false
-        }
+          orderable: false,
+          className: null,
+          targets:   [0,1,-1]
+        },
       ],
-
+      // multiple row selection
       select: {
-        style: 'multi',
-        selector: 'td:not(:nth-child(4))' // disable Aksi column
+        style: 'multis'
       },
-
+      // no specific initial ordering
       order: [],
-
       language: {
         search: '<i class="fa fa-search pos-abs mt-2 pt-3px ml-35 text-blue-m2"></i>',
         searchPlaceholder: "Search..."
-      },
-
-      buttons: [
-        {
-          "extend": "colvis",
-          "text": "<i class='far fa-eye text-125 text-dark-m2' data-toggle='tooltip' title='Show/hide columns'></i> <span class='d-none'>Show/hide columns</span>",
-          "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary",
-          columns: ':not(:first)'
-        },
-        {
-          "extend": "copy",
-          "text": "<i class='far fa-copy text-125 text-purple' data-toggle='tooltip' title='Copy to clipboard'></i> <span class='d-none'>Copy to clipboard</span>",
-          "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary"
-        },
-        {
-          "extend": "csv",
-          "text": "<i class='fa fa-database text-125 text-success-m1' data-toggle='tooltip' title='CSV'></i> <span class='d-none'>Export to CSV</span>",
-          "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary",
-        },
-        {
-          "extend": "excel",
-          "text": "<i class='far fa-file-excel text-125 text-success-m1' data-toggle='tooltip' title='Excel'></i> <span class='d-none'>Export to Excel</span>",
-          "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary"
-        },
-        {
-          "extend": "print",
-          "text": "<i class='fa fa-print text-125 text-orange-d1' data-toggle='tooltip' title='Print'></i> <span class='d-none'>Print</span>",
-          "className": "btn-light-default btn-bgc-white  btn-h-outline-primary btn-a-outline-primary",
-          autoPrint: false,
-          message: 'This print was produced using the Print button for DataTables'
-        }	,
-        {
-          "extend": "pdf",
-          "text": "<i class='far fa-file-pdf text-125 text-danger-m1' data-toggle='tooltip' title='Export to PDF'></i> <span class='d-none'>Export to PDF</span>",
-          "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary"
-        },
-      ]
+      }
     })
+
 
     // specify position of table buttons
     $(tableId_ajuanbkd).closest('.card').find('.card-toolbar').append(`
@@ -451,16 +351,16 @@
 
     // helper methods to add/remove bgc-h-* class when selecting/deselecting rows
     var _highlightSelectedRow_ajuanbkd = function(row) {
-      $(row).find('input[type=checkbox]').prop('checked', true)
+      row.querySelector('input[type=checkbox]').checked = true
       row.classList.add('bgc-success-l3')
       row.classList.remove('bgc-h-default-l4')
     }
-
     var _unhighlightDeselectedRow_ajuanbkd = function(row) {
-      $(row).find('input[type=checkbox]').prop('checked', false)
+      row.querySelector('input[type=checkbox]').checked = false
       row.classList.remove('bgc-success-l3')
       row.classList.add('bgc-h-default-l4')
     }
+
 
     // listen to select/deselect event to highlight rows
     $_table_ajuanbkd.on('select', function (e, dt, type, index) {
@@ -478,30 +378,18 @@
 
     // when clicking the checkbox in table header, select/deselect all rows
     $(tableId_ajuanbkd).on('click', 'th input[type=checkbox]', function () {
-      let checked = this.checked
-
-      $_table_ajuanbkd.rows({ page: 'current' }).every(function () {
-        let row = this.node()
-
-        if (checked) {
-          this.select()
-          _highlightSelectedRow_ajuanbkd(row)
-        } else {
-          this.deselect()
-          _unhighlightDeselectedRow_ajuanbkd(row)
-        }
-      })
-    })
-
-    $(tableId_ajuanbkd).on('change', 'tbody input[type=checkbox]', function () {
-      let row = $(this).closest('tr')
-
-      if (this.checked) {
-        $_table_ajuanbkd.row(row).select()
-      } else {
-        $_table_ajuanbkd.row(row).deselect()
+      if(this.checked) {
+        $_table_ajuanbkd.rows({ search: 'applied' }).select().every(function() {
+          _highlightSelectedRow_ajuanbkd(this.node())
+        });
+      }
+      else {
+        $_table_ajuanbkd.rows({ search: 'applied' }).deselect().every(function() {
+          _unhighlightDeselectedRow_ajuanbkd(this.node())
+        })
       }
     })
+
 
     // add/remove bgc-h-* class to TH when soring columns
     var previousTh = null
@@ -521,17 +409,6 @@
     // don't select row if we click on the "show details" `plus` sign (td)
     $(tableId_ajuanbkd).on('click', 'td.dtr-control', function (e) {
       e.stopPropagation()
-    })
-
-    // rebind setiap redraw
-    $_table_ajuanbkd.on('draw', function () {
-
-      // reset checkbox
-      $(tableId_ajuanbkd + ' tbody tr').each(function () {
-        this.classList.remove('bgc-success-l3')
-        this.classList.add('bgc-h-default-l4')
-      })
-
     })
 
   });
