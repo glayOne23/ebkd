@@ -53,6 +53,10 @@
                     No
                   </th>
 
+                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
+                    Waktu Registrasi
+                  </th>
+
                   <th class="border-0 bgc-white shadow-sm w-2">
                     Aksi
                   </th>
@@ -63,10 +67,6 @@
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
                     Pengaju
-                  </th>
-
-                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
-                    Waktu Registrasi
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
@@ -152,6 +152,10 @@
                   </td>
 
                   <td class="align-middle">
+                    {{ data.created_at }}
+                  </td>
+
+                  <td class="align-middle">
                     <div class="d-flex">
                       <span class="d-lg-inline mx-1">
                         <a href="{% url 'main:admin.ajuanbkd.update' data.id %}" data-action="edit">
@@ -178,10 +182,6 @@
 
                   <td class="align-middle">
                     {{ data.pengusul }}
-                  </td>
-
-                  <td class="align-middle">
-                    {{ data.created_at }}
                   </td>
 
                   <td class="align-middle">
@@ -310,6 +310,7 @@
           }
         },
         { data: "no" },
+        { data: "created_at" },
         {
           data: "id",
           orderable: false,
@@ -336,7 +337,6 @@
         },
         { data: "user" },
         { data: "pengusul" },
-        { data: "created_at" },
         { data: "jafung" },
         {
           data: "status",
@@ -401,14 +401,14 @@
 
       columnDefs: [
         {
-          targets: [0,1,2,3,12,17,18,19,20],
+          targets: [0,1,2,4,12,17,18,19,20],
           orderable: false
         }
       ],
 
       select: {
         style: 'multi',
-        selector: 'td:not(:nth-child(4))' // disable Aksi column
+        selector: 'td:not(:nth-child(5))' // disable Aksi column
       },
 
       order: [],

@@ -173,9 +173,9 @@ class AdminAjuanBKDDataView(View):
 
     # index kolom datatable -> field model untuk order_by
     ORDER_COLUMNS = {
-        4: 'user__username',
-        5: 'pengusul',
-        6: 'created_at',
+        3: 'created_at',
+        5: 'user__username',
+        6: 'pengusul',
         7: 'jabatanfungsional__nama',
         8: 'status_ajuan',
         9: 'nidn',
