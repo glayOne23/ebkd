@@ -66,6 +66,10 @@
                   </th>
 
                   <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
+                    Waktu Registrasi
+                  </th>
+
+                  <th class="border-0 bgc-white bgc-h-yellow-l3 shadow-sm">
                     Jafung
                   </th>
 
@@ -177,6 +181,10 @@
                   </td>
 
                   <td class="align-middle">
+                    {{ data.created_at }}
+                  </td>
+
+                  <td class="align-middle">
                     {{ data.jabatanfungsional }}
                   </td>
 
@@ -272,11 +280,14 @@
 
       ajax: {
         url: "{% url 'main:admin.ajuanbkd.data' %}",
-        type: "GET"
+        type: "GET",
+        data: function (d) {
+          d.semester_id = $('#filter_semester').val()
+        }
       },
 
       dom:
-        "<'row'<'col-12 col-sm-4 pl-2'l><'col-12 col-sm-4'B><'col-12 col-sm-4 pr-2 text-right'f>>" +
+        "<'row'<'col-12 col-sm-3 pl-2'l><'col-12 col-sm-3 div_filter'B><'col-12 col-sm-3'B><'col-12 col-sm-3 pr-2 text-right'f>>" +
         "<'row'<'col-12'tr>>" +
         "<'row'<'col-12 col-md-5'i><'col-12 col-md-7'p>>",
 
@@ -325,6 +336,7 @@
         },
         { data: "user" },
         { data: "pengusul" },
+        { data: "created_at" },
         { data: "jafung" },
         {
           data: "status",
@@ -389,7 +401,7 @@
 
       columnDefs: [
         {
-          targets: [0,1,3],
+          targets: [0,1,2,3,12,17,18,19,20],
           orderable: false
         }
       ],
@@ -440,7 +452,34 @@
           "text": "<i class='far fa-file-pdf text-125 text-danger-m1' data-toggle='tooltip' title='Export to PDF'></i> <span class='d-none'>Export to PDF</span>",
           "className": "btn-light-default btn-bgc-white btn-h-outline-primary btn-a-outline-primary"
         },
-      ]
+      ],
+
+      initComplete: function () {
+        $('.dataTables_wrapper').find('.div_filter').html(`
+          <div class="input-group col-sm-12 input-floating-label text-blue-d2 brc-blue-m1">
+            <div class="col-sm-4 p-0">
+              <div class="input-group-prepend bgc-purple">
+                <span class="input-group-text btn-purple"><b>Semester</b></span>
+              </div>
+            </div>
+
+            <div class="col-sm-8 p-0">
+              <select id="filter_semester" name="semester" class="form-control shadow-none select2bs4">
+                  <option value="">Semua Semester</option>
+                  {% for semester in datasemester %}
+                  <option value="{{ semester.id }}">{{ semester.nama }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+          </div>
+        `);
+
+        $('.select2bs4').select2({ theme: 'bootstrap4' })
+
+        $('#filter_semester').on('change', function () {
+          $_table_ajuanbkd.draw()
+        });
+      }
     })
 
     // specify position of table buttons

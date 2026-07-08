@@ -1,5 +1,5 @@
 from apps.main.forms.ajuanbkd import AdminAjuanBKDForm, AjuanBKDForm
-from apps.main.models import AjuanBKD, Asesor
+from apps.main.models import AjuanBKD, Asesor, Semester
 from apps.main.views.base import AdminRequiredMixin, CustomTemplateBaseMixin
 from apps.services.cetak_pdf import render_to_pdf
 from django.contrib import messages
@@ -113,6 +113,11 @@ class UserAjuanBKDDeleteListView(View):
 class AdminAjuanBKDListView(AdminRequiredMixin, CustomTemplateBaseMixin, TemplateView):
     template_name = 'main/admin/ajuanbkd/table.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['datasemester'] = Semester.objects.order_by('-id')
+        return context
+
 # class AdminAjuanBKDListView(AdminRequiredMixin, CustomTemplateBaseMixin, ListView):
 #     model = AjuanBKD
 #     template_name = 'main/admin/ajuanbkd/table.html'
@@ -166,13 +171,32 @@ class AdminAjuanBKDSuratPersetujuanPdfView(LoginRequiredMixin, View):
 # =====================================================================================================
 class AdminAjuanBKDDataView(View):
 
+    # index kolom datatable -> field model untuk order_by
+    ORDER_COLUMNS = {
+        4: 'user__username',
+        5: 'pengusul',
+        6: 'created_at',
+        7: 'jabatanfungsional__nama',
+        8: 'status_ajuan',
+        9: 'nidn',
+        10: 'nomortelepon',
+        11: 'perguruantinggi',
+        13: 'asesor1__user__first_name',
+        14: 'asesor2__user__first_name',
+        15: 'keterangan',
+        16: 'nomor_surat',
+    }
+
     def get(self, request):
         draw = int(request.GET.get('draw', 1))
         start = int(request.GET.get('start', 0))
         length = int(request.GET.get('length', 10))
         search_value = request.GET.get('search[value]', '')
+        semester_id = request.GET.get('semester_id', '')
+        order_column = request.GET.get('order[0][column]')
+        order_dir = request.GET.get('order[0][dir]', 'asc')
 
-        queryset = AjuanBKD.objects.all().order_by('-id')
+        queryset = AjuanBKD.objects.all()
 
         # 🔍 SEARCH
         if search_value:
@@ -182,6 +206,21 @@ class AdminAjuanBKDDataView(View):
                 Q(nidn__icontains=search_value) |
                 Q(perguruantinggi__icontains=search_value)
             )
+
+        # 📆 FILTER BY SEMESTER
+        if semester_id:
+            queryset = queryset.filter(semester__id=semester_id)
+
+        queryset = queryset.distinct()
+
+        # ↕️ ORDER
+        order_field = self.ORDER_COLUMNS.get(int(order_column)) if order_column else None
+        if order_field:
+            if order_dir == 'desc':
+                order_field = f'-{order_field}'
+            queryset = queryset.order_by(order_field, '-id')
+        else:
+            queryset = queryset.order_by('-id')
 
         total = queryset.count()
 
@@ -196,6 +235,7 @@ class AdminAjuanBKDDataView(View):
                 "no": start + i,
                 "user": str(obj.user),
                 "pengusul": obj.pengusul,
+                "created_at": obj.created_at.strftime('%d-%m-%Y %H:%M') if obj.created_at else '',
                 "jafung": obj.jabatanfungsional.nama if obj.jabatanfungsional else '',
                 "status_ajuan": obj.status_ajuan,
                 "status": obj.get_status_ajuan_display(),
