@@ -1,5 +1,9 @@
+import os
+import uuid
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.text import slugify
 
 TIPE_RUMPUN_CHOICES = [
     ('rumpun', 'Rumpun Ilmu'),
@@ -12,6 +16,29 @@ STATUS_AJUAN_CHOICES = [
     ('revisi', 'Revisi'),
     ('disetujui', 'Disetujui'),
 ]
+
+
+def _upload_path(subfolder, filename):
+    """Bangun path upload yang pendek & aman dari nama file asli yang bisa sangat panjang."""
+    base, ext = os.path.splitext(filename)
+    base = slugify(base)[:50] or 'file'
+    return f"{subfolder}/{base}_{uuid.uuid4().hex[:8]}{ext.lower()}"
+
+
+def upload_surat_permohonan(instance, filename):
+    return _upload_path('surat_permohonan', filename)
+
+
+def upload_bukti_pembayaran(instance, filename):
+    return _upload_path('bukti_pembayaran', filename)
+
+
+def upload_surat_persetujuan(instance, filename):
+    return _upload_path('surat_persetujuan', filename)
+
+
+def upload_surat_penugasan(instance, filename):
+    return _upload_path('surat_penugasan', filename)
 
 
 class JabatanFungsional(models.Model):
@@ -96,10 +123,10 @@ class AjuanBKD(models.Model):
     asesor2 = models.ForeignKey(Asesor, on_delete=models.SET_NULL, null=True, blank=True, related_name='ajuanbkd_asesor2')
     keterangan = models.TextField(null=True, blank=True)
     nomor_surat = models.CharField(max_length=100)
-    surat_permohonan = models.FileField(upload_to='surat_permohonan/')
-    bukti_pembayaran = models.FileField(upload_to='bukti_pembayaran/')
-    surat_persetujuan = models.FileField(upload_to='surat_persetujuan/', blank=True, null=True)
-    surat_penugasan = models.FileField(upload_to='surat_penugasan/', blank=True, null=True)
+    surat_permohonan = models.FileField(upload_to=upload_surat_permohonan, max_length=255)
+    bukti_pembayaran = models.FileField(upload_to=upload_bukti_pembayaran, max_length=255)
+    surat_persetujuan = models.FileField(upload_to=upload_surat_persetujuan, max_length=255, blank=True, null=True)
+    surat_penugasan = models.FileField(upload_to=upload_surat_penugasan, max_length=255, blank=True, null=True)
     status_ajuan = models.CharField(max_length=100, choices=STATUS_AJUAN_CHOICES, default='proses')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
