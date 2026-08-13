@@ -295,3 +295,8 @@ class AsesorAjuanBKDListView(CustomTemplateBaseMixin, ListView):
 
     def get_queryset(self):
         return self.model.objects.filter(Q(asesor1__user=self.request.user) | Q(asesor2__user=self.request.user)).order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['datasemester'] = Semester.objects.order_by('-id')
+        return context

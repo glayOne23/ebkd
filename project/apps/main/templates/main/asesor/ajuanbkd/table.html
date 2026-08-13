@@ -237,7 +237,7 @@
     var tableId_ajuanbkd = '#datatable_ajuanbkd'
     var $_table_ajuanbkd = $(tableId_ajuanbkd).DataTable({
       dom:
-        "<'row'<'col-12 col-sm-4 pl-2'l><'col-12 col-sm-4'B><'col-12 col-sm-4 pr-2 text-right'f>>" +
+        "<'row'<'col-12 col-sm-3 pl-2'l><'col-12 col-sm-3 div_filter'B><'col-12 col-sm-3'B><'col-12 col-sm-3 pr-2 text-right'f>>" +
         "<'row'<'col-12'tr>>" +
         "<'row'<'col-12 col-md-5'i><'col-12 col-md-7'p>>",
       renderer: 'bootstrap',
@@ -308,6 +308,33 @@
       language: {
         search: '<i class="fa fa-search pos-abs mt-2 pt-3px ml-35 text-blue-m2"></i>',
         searchPlaceholder: "Search..."
+      },
+
+      initComplete: function () {
+        $('.dataTables_wrapper').find('.div_filter').html(`
+          <div class="input-group col-sm-12 input-floating-label text-blue-d2 brc-blue-m1">
+            <div class="col-sm-4 p-0">
+              <div class="input-group-prepend bgc-purple">
+                <span class="input-group-text btn-purple"><b>Semester</b></span>
+              </div>
+            </div>
+
+            <div class="col-sm-8 p-0">
+              <select id="filter_semester" name="semester" class="form-control shadow-none select2bs4">
+                  <option value="">Semua Semester</option>
+                  {% for semester in datasemester %}
+                  <option value="{{ semester.nama }}">{{ semester.nama }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+          </div>
+        `);
+
+        $('.select2bs4').select2({ theme: 'bootstrap4' })
+
+        $('#filter_semester').on('change', function () {
+          $_table_ajuanbkd.column(10).search(this.value).draw()
+        });
       }
     })
 
