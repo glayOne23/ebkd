@@ -1,3 +1,5 @@
+import csv
+
 from apps.main.forms.ajuanbkd import AdminAjuanBKDForm, AjuanBKDForm
 from apps.main.models import AjuanBKD, Asesor, Semester
 from apps.main.views.base import AdminRequiredMixin, CustomTemplateBaseMixin
@@ -6,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
@@ -258,6 +260,50 @@ class AdminAjuanBKDDataView(View):
             "recordsFiltered": total,
             "data": data
         })
+
+
+class AdminAjuanBKDExportEmailView(AdminRequiredMixin, View):
+    def get(self, request):
+        search_value = request.GET.get('search', '')
+        semester_id = request.GET.get('semester_id', '')
+
+        queryset = AjuanBKD.objects.all()
+
+        if search_value:
+            queryset = queryset.filter(
+                Q(user__username__icontains=search_value) |
+                Q(pengusul__icontains=search_value) |
+                Q(nidn__icontains=search_value) |
+                Q(perguruantinggi__icontains=search_value)
+            )
+
+        if semester_id:
+            queryset = queryset.filter(semester__id=semester_id)
+
+        rows = (
+            queryset
+            .exclude(user__email='')
+            .exclude(user__email__isnull=True)
+            .values('user__username', 'pengusul', 'user__email', 'nomortelepon', 'perguruantinggi')
+            .distinct()
+            .order_by('user__email')
+        )
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="email_ajuan_bkd.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['Username', 'Pengaju', 'Email', 'No Wa', 'Perguruan Tinggi'])
+        for row in rows:
+            writer.writerow([
+                row['user__username'],
+                row['pengusul'],
+                row['user__email'],
+                row['nomortelepon'],
+                row['perguruantinggi'],
+            ])
+
+        return response
 # =====================================================================================================
 #                                                ADMIN SERVICE
 # =====================================================================================================

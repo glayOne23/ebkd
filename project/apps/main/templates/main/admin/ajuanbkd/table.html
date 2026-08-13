@@ -484,10 +484,21 @@
 
     // specify position of table buttons
     $(tableId_ajuanbkd).closest('.card').find('.card-toolbar').append(`
+      <button data-rel="tooltip" type="button" id="btn_export_email_ajuanbkd" class="btn radius-round btn-outline-info border-2 btn-sm ml-2" title="Download Email">
+        <i class="fa fa-envelope"></i>
+      </button>
+
       <button data-rel="tooltip" type="button" class="btn radius-round btn-outline-danger border-2 btn-sm ml-2" title="Delete" onclick="submit_listid('{% url 'main:admin.ajuanbkd.deletelist' %}',get_list_id('${tableId_ajuanbkd}'))">
         <i class="far fa-trash-alt"></i>
       </button>
     `)
+
+    $('#btn_export_email_ajuanbkd').on('click', function () {
+      let semester_id = $('#filter_semester').val() || ''
+      let search = $_table_ajuanbkd.search() || ''
+      let url = "{% url 'main:admin.ajuanbkd.export_email' %}?semester_id=" + encodeURIComponent(semester_id) + "&search=" + encodeURIComponent(search)
+      window.location.href = url
+    })
 
     $('.dataTables_wrapper').find('.dataTables_filter').find('input').addClass('pl-45 radius-round').removeClass('form-control-sm')
 
