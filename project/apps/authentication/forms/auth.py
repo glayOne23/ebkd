@@ -44,6 +44,10 @@ class FormSignIn(AuthenticationForm, FormErrorsMixin):
         model   = User
         fields  = ['username','password']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = 'Username'
+
 
 class FormResetPassword(forms.Form, FormErrorsMixin):
     email       = forms.EmailField(max_length=100, help_text='Enter a valid email address')
