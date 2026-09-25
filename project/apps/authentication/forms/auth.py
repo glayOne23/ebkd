@@ -20,6 +20,12 @@ class FormSignUp(UserCreationForm, FormErrorsMixin):
         model   = User
         fields  = ['username','first_name','last_name','email','password1','password2']
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email__iexact=email).exists():
+            raise ValidationError(_('This email is already registered.'), code='email_exists')
+        return email
+
 
 class FormSignUpProfile(forms.ModelForm, FormErrorsMixin):
     class Meta:

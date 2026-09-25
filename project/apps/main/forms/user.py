@@ -17,7 +17,13 @@ class FormUserEdit(forms.ModelForm, FormErrorsMixin):
     class Meta:
         model   = User
         fields  = ['username','first_name','last_name','email','password1','password2']
-    
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email__iexact=email).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError(_('This email is already used by another user.'), code='email_exists')
+        return email
+
 
 class FormProfileEdit(forms.ModelForm, FormErrorsMixin):
     class Meta:

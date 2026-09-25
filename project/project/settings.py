@@ -291,8 +291,15 @@ SOCIALACCOUNT_PROVIDERS = {
             "key": ""
         },
         "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"prompt": "select_account"}, # Selalu tampilkan daftar akun Google
     }
 }
+
+# Jika email Google (sudah terverifikasi oleh Google) sudah dipakai user lokal,
+# langsung login & hubungkan ke user tersebut, bukan menampilkan form signup allauth.
+SOCIALACCOUNT_EMAIL_AUTHENTICATION              = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_ADAPTER                           = 'apps.authentication.adapters.SocialAccountAdapter' # Tolak login jika email dipakai >1 user
 
 
 # =======[LOGGING]=======
