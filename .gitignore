@@ -10,3 +10,4 @@ project/staticfiles/*
 token/
 token.json
 .vscode
+project/backups/
