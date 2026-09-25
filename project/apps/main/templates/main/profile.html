@@ -410,7 +410,7 @@
 
               <!-- password edit tab -->
               <div class="tab-pane px-1 px-md-2 px-lg-4" id="password-tab-edit">
-                <h4 class="bgc-secondary-l4 text-dark-tp3 text-center text-140 mb-3 mx-3 py-25">{% if datauser.password %}Update Password{% else %}Set your password for this system{% endif %}</h4>
+                <h4 class="bgc-secondary-l4 text-dark-tp3 text-center text-140 mb-3 mx-3 py-25">{% if datauser.has_usable_password %}Update Password{% else %}Set your password for this system{% endif %}</h4>
 
                 <div class="row">
                   <div class="col-12 col-lg-10 offset-lg-1 mt-3">
@@ -420,7 +420,7 @@
 
                       <input type="hidden" name="form" value="password">
 
-                      {% if datauser.password %}
+                      {% if datauser.has_usable_password %}
                         {{ formpassword }}
                       {% else %}
                         <div class="form-group row">

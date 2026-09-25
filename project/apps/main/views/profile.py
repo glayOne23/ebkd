@@ -35,7 +35,7 @@ def index(request):
     context['formprofile']      = FormMyProfile(request.POST or None, request.FILES or None, instance=request.user.profile)
 
     
-    if request.user.password:
+    if request.user.has_usable_password():
         # if the user already has a password
         context['formpassword']     = FormChangePassword(request.user, request.POST or None)
     else:
@@ -77,7 +77,7 @@ def index(request):
             else:          
                 if context['formpassword'].is_valid():
                     # ===[If there is already a password]===
-                    if request.user.password:
+                    if request.user.has_usable_password():
                         user = context['formpassword'].save()
                         update_session_auth_hash(request, user)
                         messages.success(request, 'Your password was successfully updated!')
@@ -97,6 +97,7 @@ def index(request):
                             getuser = User.objects.get(username=request.user.username)
                             getuser.set_password(request.POST.get('password1'))
                             getuser.save()
+                            update_session_auth_hash(request, getuser)
                             messages.success(request, 'Your password was successfully updated!')
 
                 else:
